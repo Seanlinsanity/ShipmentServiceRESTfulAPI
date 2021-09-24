@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.seanlindev.springframework.shippingserviceapi.repositories.ShipmentRepository">
+    <resultMap id="ShipmentMap" type="Shipment">
+        <result property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="recipient" column="recipient"/>
+        <result property="shipmentId" column="shipment_id"/>
+        <result property="created" column="created"/>
+        <result property="address" column="address"/>
+        <result property="status" column="status"/>
+    </resultMap>
+    <select id="findByOrderId" parameterType="java.lang.String" resultMap="ShipmentMap">
+        select * from shipments where order_id = #{id}
+    </select>
+
+    <select id="findByShipmentId" parameterType="java.lang.String" resultMap="ShipmentMap">
+        select * from shipments where shipment_id = #{id}
+    </select>
+
+    <select id="findByShipmentIdForUpdate" parameterType="java.lang.String" resultMap="ShipmentMap">
+        select * from shipments where shipment_id = #{id} for update
+    </select>
+
+    <update id="updateStatusByShipmentId" parameterType="map">
+        update shipments set status = #{status} where shipment_id = #{id}
+    </update>
+
+    <insert id="save" parameterType="Shipment">
+        insert into shipments (shipment_id, order_id, recipient, created, address, status) values (#{shipmentId}, #{orderId}, #{recipient}, #{created}, #{address}, #{status})
+    </insert>
+</mapper>
